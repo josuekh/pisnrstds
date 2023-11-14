@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LivroController {
     @GetMapping("/detalhes")
-    public String exibirTest(Model model) {
+    public String exibirDetalhes(Model model) {
         return "detalhes";
+    }
+    @GetMapping("/cadastrar-livro")
+    public String exibirCadastrarLivro(Model model) {
+        return "cadastrar-livro";
     }
 }

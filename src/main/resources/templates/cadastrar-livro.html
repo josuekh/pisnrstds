@@ -12,7 +12,30 @@
     </head>
     <header th:insert=~{navbar.html}></header>
     <body>
-       
+        <div class="container">
+            <div class="row d-flex align-items-center justify-content-center mx-auto" id="rowCadastrarLivro">
+                <div class="col-12">
+                    <h2>Cadastrando Livro</h2>
+                    <form  method="post" id="formCadastrarLIvro">                  
+                        <div class="row ">
+                            <div class="m-3 col-sm-12">
+                                <input type="text" class="form-control" placeholder="Nome" id="CadastrarLivroNome">
+                            </div>
+                            <div class="m-3 col-sm-12">
+                                <input type="text" class="form-control" placeholder="Autor" id="CadastrarLivroAutor">
+                            </div>
+                            <div class="m-3 col-sm-12">
+                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="CadastrarLivroSinopse"></textarea>
+                            </div>                            
+                            <div class="m-3 col">
+                                <input type="date" class="form-control"  placeholder="" id="CadastrarLivroDataLancamento">
+                            </div>                    
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cadastrar Livro</button>                               
+                    </form>
+                </div>
+            </div>  
+        </div>        
         <script th:src="@{/js/script.js}"></script> 
     </body> 
 </html>
