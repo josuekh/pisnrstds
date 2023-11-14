@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Detalhes do Livro</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"> 
+        <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    </head>
+    <header th:insert=~{navbar.html}></header>
+    <body>
+        <div class="container">
+            <div class="row d-flex align-items-center justify-content-center mb-4">
+                <div class="col-12 text-center">
+                    <img class="mt-5" src="../images/img_placeholder.png" alt="">
+                    <h1 id="livro-nome">1984</h1>
+                    <p id="livro-autor">George Orwell</p>
+                    <p id="livro-dataLancamento">08/06/1949</p>
+                    <p id="livro-sinopse">"1984" é um romance distópico que se passa em um mundo totalitário no ano de 1984. A história segue Winston Smith, um funcionário do Partido que começa a questionar as práticas opressivas e manipuladoras do governo. O livro explora temas como vigilância, controle do Estado, liberdade individual e a distorção da verdade. A expressão "Big Brother" originou-se deste livro, referindo-se a uma figura de autoridade onipresente e opressiva. "1984" é amplamente considerado uma das obras mais influentes do século XX e continua a ser uma leitura relevante nos debates sobre privacidade e liberdade.</p>
+                    <button id="btnEditarlivro" class="btn btn-primary">Editar</button>
+                </div>               
+                </div>
+             <div class="row d-flex align-items-center justify-content-center" id="rowAdicionarAnalise">
+                 <div class="col-8">
+                        <h2>Adicionar Análise</h2>
+                        <form  method="post" id="formAdicionarAnalise">
+                            <div class="form-group">
+                                <label for="titulo">Titulo</label>
+                                <input type="text" name="titulo" class="form-control" min="1" max="5"id="adicionarAnaliseTitulo">
+                            </div>
+                            <div class="form-group">
+                                <label for="analise">Sua Análise:</label>
+                                <textarea name="analise" class="form-control" id="adicionarAnaliseAnalise"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="nota">Nota:</label>
+                                <input type="number" name="nota" class="form-control" min="1" max="5"id="adicionarAnaliseNota">
+                            </div>                            
+                            <button type="submit" class="btn btn-primary" >Adicionar Análise</button>
+                        </form>
+                    </div>
+            </div>
+    </body>
+</html>
