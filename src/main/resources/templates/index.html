@@ -17,7 +17,11 @@
                 <div th:each="livro : ${livros}" class="livro p2 mb-2 col-sm-3">
                     <div>
                         <a th:href="@{'/detalhes/' + ${livro.id}}">
-                            <img class="w-100" th:src="@{'../images/img_placeholder.jpg'}" alt="" title="">
+                            <th:block th:with="livroNome=${livro.nome.replaceAll(' ', '_')}, livroAutor=${livro.autor.replaceAll(' ', '_')}, imagemNome=${livroNome + '_' + livroAutor}">
+                                <img class="w-100" th:src="@{'../images/' + ${imagemNome + '.jpg'}}" alt="" title=""
+                                     th:alt="${livro.nome}" th:title="${livro.nome}"
+                                     onerror="this.src='../images/img_placeholder.jpg';">
+                            </th:block>
                         </a>
                         <p>
                             <span th:text="${livro.nome}"></span>
