@@ -4,12 +4,21 @@
  */
 package com.josuehoffmann.projetointegrador.controller;
 
+import com.josuehoffmann.projetointegrador.data.LivroEntity;
 import com.josuehoffmann.projetointegrador.service.LivroService;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -17,28 +26,42 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class LivroController {
-    
+
     @Autowired
     LivroService livroService;
-    
+
     @GetMapping("/")
     public String exibirIndex(Model model) {
         model.addAttribute("livros", livroService.getAllLivros());
-        
+
         return "index";
     }
-    @GetMapping("/detalhes")
-    public String exibirDetalhes(Model model) {
+
+    @GetMapping("/detalhes/{id}")
+    public String exibirDetalhes(@PathVariable Integer id, Model model) {
+        LivroEntity livro = livroService.getLivroById(id);
+        model.addAttribute("livro", livro);
         return "detalhes";
     }
+
     @GetMapping("/cadastrar-livro")
     public String exibirCadastrarLivro(Model model) {
+        model.addAttribute("livro", new LivroEntity());
         return "cadastrar-livro";
     }
     
-    private boolean verificarExistenciaImagem(String imagemNome) {
-        String caminhoImagem = "../images/" + imagemNome + ".jpg";
-        File file = new File(caminhoImagem);
-        return file.exists();
+    @PostMapping("/cadastrar-livro")
+    public String cadastrarLivro(@ModelAttribute LivroEntity livro, Model model, @RequestParam("data") String data) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date novaData = dateFormat.parse(data);
+            livro.setDataPublicacao(novaData);
+
+            livroService.cadastrarLivro(livro);
+            return "redirect:/";
+        } catch (ParseException e) {            
+            return "cadastrar-livro";
+        }
     }
 }

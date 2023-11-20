@@ -23,5 +23,12 @@ public class LivroService {
     public List<LivroEntity> getAllLivros() {
         return livroRepository.findAll();
     }
-
+    
+    public LivroEntity getLivroById(Integer id){
+        return livroRepository.findById(id).orElse(null);
+    }
+    
+    public LivroEntity cadastrarLivro(LivroEntity livro) {
+        return livroRepository.save(livro);
+    }
 }

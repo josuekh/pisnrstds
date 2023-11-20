@@ -17,11 +17,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container">
             <div class="row d-flex align-items-center justify-content-center mb-4">
                 <div class="col-12 text-center">
-                    <img class="mt-5" src="../images/1984_George_Orwell.jpg" alt="">
-                    <h1 id="livro-nome">1984</h1>
-                    <p id="livro-autor">George Orwell</p>
-                    <p id="livro-dataLancamento">08/06/1949</p>
-                    <p id="livro-sinopse">"1984" é um romance distópico que se passa em um mundo totalitário no ano de 1984. A história segue Winston Smith, um funcionário do Partido que começa a questionar as práticas opressivas e manipuladoras do governo. O livro explora temas como vigilância, controle do Estado, liberdade individual e a distorção da verdade. A expressão "Big Brother" originou-se deste livro, referindo-se a uma figura de autoridade onipresente e opressiva. "1984" é amplamente considerado uma das obras mais influentes do século XX e continua a ser uma leitura relevante nos debates sobre privacidade e liberdade.</p>
+                    <th:block th:with="livroNome=${livro.nome.replaceAll(' ', '_')}, livroAutor=${livro.autor.replaceAll(' ', '_')}, imagemNome=${livroNome + '_' + livroAutor}">
+                                <img class="mt-5" th:src="@{'../images/' + ${imagemNome + '.jpg'}}" alt="" title=""
+                                     th:alt="${livro.nome}" th:title="${livro.nome}"
+                                     onerror="this.src='../images/img_placeholder.jpg';">
+                     </th:block>
+                    
+                    <h1 id="livro-nome" th:text="${livro.nome}"></h1>
+                    <p id="livro-autor" th:text="${livro.autor}"></p>
+                    <p id="livro-dataLancamento" th:text="${#dates.format(livro.dataPublicacao, 'dd/MM/yyyy')}"></p>
+                    <p id="livro-sinopse" th:text="${livro.sinopse}"></p>
                     <button id="btnEditarlivro" class="btn btn-primary">Editar</button>
                 </div>               
             </div>
@@ -71,16 +76,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <form  method="post" id="formEditarLIvro">                  
                         <div class="row align-items-center justify-content-center ">
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" required>
+                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" th:value="${livro.nome}" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" required>
+                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" th:value="${livro.autor}" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" required></textarea>
+                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" th:text="${livro.sinopse}" required></textarea>
                             </div>                            
                             <div class="m-3 col">
-                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" required>
+                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" th:value="${#dates.format(livro.dataPublicacao, 'yyyy-MM-dd')}" required>
                             </div>                    
                         </div>
                         <button id="btnCancelarEditarLivro" type="button" class="btn btn-secondary">Cancelar</button>
@@ -133,5 +138,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </div>
             <script th:src="@{/js/script.js}"></script> 
-        </body>
+    </body>
 </html>

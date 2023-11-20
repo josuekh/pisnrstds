@@ -16,19 +16,19 @@
             <div class="row d-flex align-items-center justify-content-center mx-auto" id="rowCadastrarLivro">
                 <div class="col-12">
                     <h2>Cadastrando Livro</h2>
-                    <form  method="post" id="formCadastrarLIvro">                  
+                    <form  method="post"th:action="@{/cadastrar-livro}" th:object="${livro}" id="formCadastrarLIvro">                  
                         <div class="row ">
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Nome" id="CadastrarLivroNome">
+                                <input type="text" class="form-control" placeholder="Nome" id="CadastrarLivroNome" name="nome">
                             </div>
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Autor" id="CadastrarLivroAutor">
+                                <input type="text" class="form-control" placeholder="Autor" id="CadastrarLivroAutor" name="autor">
                             </div>
                             <div class="m-3 col-sm-12">
-                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="CadastrarLivroSinopse"></textarea>
+                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="CadastrarLivroSinopse" name="sinopse"></textarea>
                             </div>                            
                             <div class="m-3 col">
-                                <input type="date" class="form-control"  placeholder="" id="CadastrarLivroDataLancamento">
+                                <input type="date" class="form-control"  placeholder="" id="CadastrarLivroDataPublicacao" name="data">
                             </div>                    
                         </div>
                         <button type="submit" class="btn btn-primary">Cadastrar Livro</button>                               
