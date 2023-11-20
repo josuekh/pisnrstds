@@ -28,4 +28,5 @@ public class AnaliseEntity {
     private Integer livroId;
     private String titulo;
     private String resenha;
+    private Integer nota; 
 }

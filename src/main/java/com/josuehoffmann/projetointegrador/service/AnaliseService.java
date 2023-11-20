@@ -19,7 +19,7 @@ public class AnaliseService {
     @Autowired
     private AnaliseRepository analiseRepository;
     
-    public List<AnaliseEntity> getAnaliseByLivroId(Integer livroId){
+    public List<AnaliseEntity> getAnalisesByLivroId(Integer livroId){
         return analiseRepository.findByLivroId(livroId);
     }
     

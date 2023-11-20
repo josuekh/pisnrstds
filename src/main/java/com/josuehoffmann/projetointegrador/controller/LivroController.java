@@ -5,6 +5,7 @@
 package com.josuehoffmann.projetointegrador.controller;
 
 import com.josuehoffmann.projetointegrador.data.LivroEntity;
+import com.josuehoffmann.projetointegrador.service.AnaliseService;
 import com.josuehoffmann.projetointegrador.service.LivroService;
 import java.io.File;
 import java.text.ParseException;
@@ -29,6 +30,9 @@ public class LivroController {
 
     @Autowired
     LivroService livroService;
+    
+    @Autowired
+    AnaliseService analiseService;
 
     @GetMapping("/")
     public String exibirIndex(Model model) {
@@ -41,6 +45,7 @@ public class LivroController {
     public String exibirDetalhes(@PathVariable Integer id, Model model) {
         LivroEntity livro = livroService.getLivroById(id);
         model.addAttribute("livro", livro);
+        model.addAttribute("analises",analiseService.getAnalisesByLivroId(id));
         return "detalhes";
     }
 
