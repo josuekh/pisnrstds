@@ -85,7 +85,7 @@ public class LivroController {
              livroService.cadastrarLivro(livroExistente);     
             return "redirect:/";
         } catch (ParseException e) {            
-            return "cadastrar-livro";
+            return "redirect:/";
         }        
     }
     
