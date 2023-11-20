@@ -64,4 +64,30 @@ public class LivroController {
             return "cadastrar-livro";
         }
     }
+    
+    @PostMapping("/excluir-livro/{id}")
+    public String excluirLivro(@PathVariable Integer id) {
+        livroService.excluirLivro(id);
+        return "redirect:/";
+    }
+    
+    @PostMapping("/editar-livro/{id}")
+    public String editarLivro(@ModelAttribute LivroEntity livro, @PathVariable Integer id, @RequestParam("data") String data) {
+        LivroEntity livroExistente = livroService.getLivroById(id);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date novaData = dateFormat.parse(data);
+            livroExistente.setDataPublicacao(novaData);
+            livroExistente.setNome(livro.getNome());
+            livroExistente.setAutor(livro.getAutor());
+            livroExistente.setSinopse(livro.getSinopse());
+
+             livroService.cadastrarLivro(livroExistente);     
+            return "redirect:/";
+        } catch (ParseException e) {            
+            return "cadastrar-livro";
+        }        
+    }
+    
+    
 }

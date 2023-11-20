@@ -73,25 +73,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="row d-flex align-items-center justify-content-center" id="rowEditarLivro">
                 <div class="col-8">
                     <h2>Editando Livro</h2>
-                    <form  method="post" id="formEditarLIvro">                  
+                    <form  method="post" th:action="@{'/editar-livro/' + ${livro.id}}" id="formEditarLIvro">                  
                         <div class="row align-items-center justify-content-center ">
+                            <input type="hidden" id="livroId" name="livroId" th:value="${livro.id}">
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" th:value="${livro.nome}" required>
+                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" th:value="${livro.nome}" name="nome" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" th:value="${livro.autor}" required>
+                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" th:value="${livro.autor}"  name="autor" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" th:text="${livro.sinopse}" required></textarea>
+                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" th:text="${livro.sinopse}"  name="sinopse" required></textarea>
                             </div>                            
                             <div class="m-3 col">
-                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" th:value="${#dates.format(livro.dataPublicacao, 'yyyy-MM-dd')}" required>
+                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" th:value="${#dates.format(livro.dataPublicacao, 'yyyy-MM-dd')}" name="data" required>
                             </div>                    
                         </div>
                         <button id="btnCancelarEditarLivro" type="button" class="btn btn-secondary">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Salvar Livro</button>
-                        <button id="btnExcluirLivro" type="button" class="mx-5 btn btn-danger">Excluir</button>                      
-
+                        <button id="btnExcluirLivro" type="submit" th:formaction="@{'/excluir-livro/' + ${livro.id}}" class="mx-5 btn btn-danger">Excluir</button>                
                     </form>
                 </div>
             </div>

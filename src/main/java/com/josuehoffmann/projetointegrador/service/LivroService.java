@@ -31,4 +31,8 @@ public class LivroService {
     public LivroEntity cadastrarLivro(LivroEntity livro) {
         return livroRepository.save(livro);
     }
+    
+    public void excluirLivro(Integer id) {
+        livroRepository.deleteById(id);
+    }
 }
