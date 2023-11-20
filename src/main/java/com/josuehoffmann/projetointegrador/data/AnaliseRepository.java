@@ -6,6 +6,8 @@ package com.josuehoffmann.projetointegrador.data;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnaliseRepository extends JpaRepository<AnaliseEntity, Integer>{
      List<AnaliseEntity> findByLivroId(Integer livroId);
-     List<AnaliseEntity> deleteByLivroId(Integer livroId);
+     List<AnaliseEntity> deleteByLivroId(Integer livroId);    
+    
 }

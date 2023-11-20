@@ -10,6 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"> 
         <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     </head>
     <header th:insert=~{navbar.html}></header>
@@ -23,6 +24,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                      onerror="this.src='../images/img_placeholder.jpg';">
                      </th:block>
                     
+                    <h1>
+                        <span class="material-symbols-outlined text-warning text-lg">hotel_class</span>
+                        <span th:text="${mediaNota}" class="text-warning" ></span>
+                    </h1>
                     <h1 id="livro-nome" th:text="${livro.nome}"></h1>
                     <p id="livro-autor" th:text="${livro.autor}"></p>
                     <p id="livro-dataLancamento" th:text="${#dates.format(livro.dataPublicacao, 'dd/MM/yyyy')}"></p>
@@ -33,44 +38,48 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="row d-flex align-items-center justify-content-center" id="rowAdicionarAnalise">
                 <div class="col-8">
                     <h2>Adicionar Análise</h2>
-                    <form  method="post" id="formAdicionarAnalise">
+                    <form  method="post" th:action="@{/cadastrar-analise}" th:object="${novaAnalise}" id="formAdicionarAnalise">
+                        <input type="hidden" id="livroId" name="livroId" th:value="${livro.id}">
                         <div class="form-group">
                             <label for="adicionarAnaliseTitulo">Titulo</label>
                             <input type="text" name="titulo" class="form-control" min="1" max="5"id="adicionarAnaliseTitulo" required>
                         </div>
                         <div class="form-group">
-                            <label for="adicionarAnaliseAnalise">Sua Análise:</label>
-                            <textarea name="analise" class="form-control" id="adicionarAnaliseAnalise" required></textarea >
+                            <label for="adicionarAnaliseAnalise">Sua resenha:</label>
+                            <textarea name="resenha" class="form-control" id="adicionarAnaliseAnalise" required></textarea >
                         </div>
                         <div class="form-group">
                             <label for="adicionarAnaliseNota">Nota:</label>
                             <input type="number" name="nota" class="form-control" min="1" max="5"id="adicionarAnaliseNota" required>
                         </div>                            
-                        <button type="submit" class="btn btn-primary" >Adicionar Análise</button>
+                        <button type="submit" class="btn btn-primary mt-3" >Adicionar Análise</button>
                     </form>
                 </div>               
             </div>
-            <div class="row d-flex align-items-center justify-content-center" id="rowEditarAnalise">
+            <div class="row d-none align-items-center justify-content-center" id="rowEditarAnalise">
                 <div class="col-8">
                     <h2>Editando Análise</h2>
-                    <form  method="post" id="formEditarAnalise">
+                    <form  method="post" th:action="@{'/editar-analise/' + ${analiseId}}" th:object="${analiseEditada}" id="formEditarAnalise">
+                        <input type="hidden" name="analiseId" id="analiseId" th:value="${analiseId}">
                         <div class="form-group">
                             <label for="EditarAnaliseTitulo">Titulo</label>
                             <input type="text" name="titulo" class="form-control" min="1" max="5"id="EditarAnaliseTitulo" required>
                         </div>
                         <div class="form-group">
                             <label for="EditarAnaliseAnalise">Sua Análise:</label>
-                            <textarea name="analise" class="form-control" id="EditarAnaliseAnalise" required></textarea>
+                            <textarea name="resenha" class="form-control" id="EditarAnaliseAnalise" required></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="EditarAnaliseNota">Nota:</label>
                             <input type="number" name="nota" class="form-control" min="1" max="5"id="EditarAnaliseNota" required>
-                        </div>                            
+                        </div>
+                        <button id="btnCancelarEditarAnalise" type="button" class="btn btn-secondary">Cancelar</button>
                         <button type="submit" class="btn btn-primary" >Editar Análise</button>
+                        <button id="btnExcluirAnalise" type="submit" th:formaction="@{'/excluir-analise/' + ${analiseId}}" class="mx-5 btn btn-danger">Excluir</button>
                     </form>
                 </div>
             </div>
-            <div class="row d-flex align-items-center justify-content-center" id="rowEditarLivro">
+            <div class="row d-none align-items-center justify-content-center" id="rowEditarLivro">
                 <div class="col-8">
                     <h2>Editando Livro</h2>
                     <form  method="post" th:action="@{'/editar-livro/' + ${livro.id}}" id="formEditarLIvro">                  
@@ -102,9 +111,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <li th:each="analise : ${analises}">
                         <div class="card bg-light mb-4">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${analise.titulo}"></h5>
-                                <p class="card-text" th:text="${analise.resenha}"></p>
-                                <p class="card-text">Nota: <span th:text="${analise.nota}"></span></p>
+                                <h5 class="card-title" th:id="'titulo_' + ${analise.id}" th:text="${analise.titulo}"></h5>
+                                <p class="card-text" th:id="'resenha_' + ${analise.id}" th:text="${analise.resenha}"></p>
+                                <p class="card-text">Nota: <span th:id="'nota_' + ${analise.id}" th:text="${analise.nota}"></span></p>
+                                <button class="btn btn-primary editar-resenha-button" th:attr="data-analise-id=${analise.id}">Editar</button>
                             </div>
                         </div>
                     </li>                    

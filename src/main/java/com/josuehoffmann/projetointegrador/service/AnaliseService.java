@@ -23,4 +23,21 @@ public class AnaliseService {
         return analiseRepository.findByLivroId(livroId);
     }
     
+    public AnaliseEntity getAnaliseById(Integer id){
+        return analiseRepository.findById(id).orElse(null);
+    }
+    
+    public void excluirAnalise(Integer id){
+        analiseRepository.deleteById(id);
+    }
+    
+    public AnaliseEntity cadastrarAnalise(AnaliseEntity analise){
+        return analiseRepository.save(analise);
+    }
+    
+    public List<AnaliseEntity> deletarTodasAnalises(Integer livroId){
+        return analiseRepository.deleteByLivroId(livroId);
+    }
+    
+    
 }
