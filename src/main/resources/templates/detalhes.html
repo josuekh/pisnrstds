@@ -10,6 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"> 
         <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     </head>
     <header th:insert=~{navbar.html}></header>
@@ -17,121 +18,109 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container">
             <div class="row d-flex align-items-center justify-content-center mb-4">
                 <div class="col-12 text-center">
-                    <img class="mt-5" src="../images/1984_George_Orwell.jpg" alt="">
-                    <h1 id="livro-nome">1984</h1>
-                    <p id="livro-autor">George Orwell</p>
-                    <p id="livro-dataLancamento">08/06/1949</p>
-                    <p id="livro-sinopse">"1984" é um romance distópico que se passa em um mundo totalitário no ano de 1984. A história segue Winston Smith, um funcionário do Partido que começa a questionar as práticas opressivas e manipuladoras do governo. O livro explora temas como vigilância, controle do Estado, liberdade individual e a distorção da verdade. A expressão "Big Brother" originou-se deste livro, referindo-se a uma figura de autoridade onipresente e opressiva. "1984" é amplamente considerado uma das obras mais influentes do século XX e continua a ser uma leitura relevante nos debates sobre privacidade e liberdade.</p>
+                    <th:block th:with="livroNome=${livro.nome.replaceAll(' ', '_')}, livroAutor=${livro.autor.replaceAll(' ', '_')}, imagemNome=${livroNome + '_' + livroAutor}">
+                                <img class="mt-5" th:src="@{'../images/' + ${imagemNome + '.jpg'}}" alt="" title=""
+                                     th:alt="${livro.nome}" th:title="${livro.nome}"
+                                     onerror="this.src='../images/img_placeholder.jpg';">
+                     </th:block>
+                    
+                    <h1>
+                        <span class="material-symbols-outlined text-warning text-lg">hotel_class</span>
+                        <span th:text="${mediaNota}" class="text-warning" ></span>
+                    </h1>
+                    <h1 id="livro-nome" th:text="${livro.nome}"></h1>
+                    <p id="livro-autor" th:text="${livro.autor}"></p>
+                    <p id="livro-dataLancamento" th:text="${#dates.format(livro.dataPublicacao, 'dd/MM/yyyy')}"></p>
+                    <p id="livro-sinopse" th:text="${livro.sinopse}"></p>
                     <button id="btnEditarlivro" class="btn btn-primary">Editar</button>
                 </div>               
             </div>
             <div class="row d-flex align-items-center justify-content-center" id="rowAdicionarAnalise">
                 <div class="col-8">
                     <h2>Adicionar Análise</h2>
-                    <form  method="post" id="formAdicionarAnalise">
+                    <form  method="post" th:action="@{/cadastrar-analise}" th:object="${novaAnalise}" id="formAdicionarAnalise">
+                        <input type="hidden" id="livroId" name="livroId" th:value="${livro.id}">
                         <div class="form-group">
                             <label for="adicionarAnaliseTitulo">Titulo</label>
                             <input type="text" name="titulo" class="form-control" min="1" max="5"id="adicionarAnaliseTitulo" required>
                         </div>
                         <div class="form-group">
-                            <label for="adicionarAnaliseAnalise">Sua Análise:</label>
-                            <textarea name="analise" class="form-control" id="adicionarAnaliseAnalise" required></textarea >
+                            <label for="adicionarAnaliseAnalise">Sua resenha:</label>
+                            <textarea name="resenha" class="form-control" id="adicionarAnaliseAnalise" required></textarea >
                         </div>
                         <div class="form-group">
                             <label for="adicionarAnaliseNota">Nota:</label>
                             <input type="number" name="nota" class="form-control" min="1" max="5"id="adicionarAnaliseNota" required>
                         </div>                            
-                        <button type="submit" class="btn btn-primary" >Adicionar Análise</button>
+                        <button type="submit" class="btn btn-primary mt-3" >Adicionar Análise</button>
                     </form>
                 </div>               
             </div>
-            <div class="row d-flex align-items-center justify-content-center" id="rowEditarAnalise">
+            <div class="row d-none align-items-center justify-content-center" id="rowEditarAnalise">
                 <div class="col-8">
                     <h2>Editando Análise</h2>
-                    <form  method="post" id="formEditarAnalise">
+                    <form  method="post" th:action="@{'/editar-analise/' + ${analiseId}}" th:object="${analiseEditada}" id="formEditarAnalise">
+                        <input type="hidden" name="analiseId" id="analiseId" th:value="${analiseId}">
                         <div class="form-group">
                             <label for="EditarAnaliseTitulo">Titulo</label>
                             <input type="text" name="titulo" class="form-control" min="1" max="5"id="EditarAnaliseTitulo" required>
                         </div>
                         <div class="form-group">
                             <label for="EditarAnaliseAnalise">Sua Análise:</label>
-                            <textarea name="analise" class="form-control" id="EditarAnaliseAnalise" required></textarea>
+                            <textarea name="resenha" class="form-control" id="EditarAnaliseAnalise" required></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="EditarAnaliseNota">Nota:</label>
                             <input type="number" name="nota" class="form-control" min="1" max="5"id="EditarAnaliseNota" required>
-                        </div>                            
+                        </div>
+                        <button id="btnCancelarEditarAnalise" type="button" class="btn btn-secondary">Cancelar</button>
                         <button type="submit" class="btn btn-primary" >Editar Análise</button>
+                        <button id="btnExcluirAnalise" type="submit" th:formaction="@{'/excluir-analise/' + ${analiseId}}" class="mx-5 btn btn-danger">Excluir</button>
                     </form>
                 </div>
             </div>
-            <div class="row d-flex align-items-center justify-content-center" id="rowEditarLivro">
+            <div class="row d-none align-items-center justify-content-center" id="rowEditarLivro">
                 <div class="col-8">
                     <h2>Editando Livro</h2>
-                    <form  method="post" id="formEditarLIvro">                  
+                    <form  method="post" th:action="@{'/editar-livro/' + ${livro.id}}" id="formEditarLIvro">                  
                         <div class="row align-items-center justify-content-center ">
+                            <input type="hidden" id="livroId" name="livroId" th:value="${livro.id}">
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" required>
+                                <input type="text" class="form-control" placeholder="Nome" id="editarLivroNome" th:value="${livro.nome}" name="nome" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" required>
+                                <input type="text" class="form-control" placeholder="Autor" id="editarLivroAutor" th:value="${livro.autor}"  name="autor" required>
                             </div>
                             <div class="m-3 col-sm-12">
-                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" required></textarea>
+                                <textarea class="form-control"  placeholder="Sinopse" rows="4" id="editarLivroSinopse" th:text="${livro.sinopse}"  name="sinopse" required></textarea>
                             </div>                            
                             <div class="m-3 col">
-                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" required>
+                                <input type="date" class="form-control"  placeholder="" id="editarLivroDataLancamento" th:value="${#dates.format(livro.dataPublicacao, 'yyyy-MM-dd')}" name="data" required>
                             </div>                    
                         </div>
                         <button id="btnCancelarEditarLivro" type="button" class="btn btn-secondary">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Salvar Livro</button>
-                        <button id="btnExcluirLivro" type="button" class="mx-5 btn btn-danger">Excluir</button>                      
-
+                        <button id="btnExcluirLivro" type="submit" th:formaction="@{'/excluir-livro/' + ${livro.id}}" class="mx-5 btn btn-danger">Excluir</button>                
                     </form>
                 </div>
             </div>
             <div class="row d-flex align-items-center justify-content-center">
                 <div class="col-10">
                     <h2 class="mb-4">Análises</h2>        
-                    <li>
+                </ul>
+                    <li th:each="analise : ${analises}">
                         <div class="card bg-light mb-4">
                             <div class="card-body">
-                                <h5 class="card-title">Impressionante!</h5>
-                                <p class="card-text">A visão distópica de Orwell é incrivelmente relevante até hoje. Um clássico atemporal.</p>
-                                <p class="card-text">Nota: <span>5</span></p>
+                                <h5 class="card-title" th:id="'titulo_' + ${analise.id}" th:text="${analise.titulo}"></h5>
+                                <p class="card-text" th:id="'resenha_' + ${analise.id}" th:text="${analise.resenha}"></p>
+                                <p class="card-text">Nota: <span th:id="'nota_' + ${analise.id}" th:text="${analise.nota}"></span></p>
+                                <button class="btn btn-primary editar-resenha-button" th:attr="data-analise-id=${analise.id}">Editar</button>
                             </div>
                         </div>
-                    </li>
-                    <li>
-                        <div class="card bg-light mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Profundo e Provocativo</h5>
-                                <p class="card-text">A narrativa de Orwell mergulha nas complexidades do controle social. Uma obra-prima literária.</p>
-                                <p class="card-text">Nota: <span>4</span></p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="card bg-light mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Impactante!</h5>
-                                <p class="card-text">A crítica à vigilância estatal e à manipulação da verdade ressoa fortemente. Um livro que deixa marca.</p>
-                                <p class="card-text">Nota: <span>3</span></p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="card bg-light mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Leitura Obrigatória</h5>
-                                <p class="card-text">Essencial para compreender os perigos do totalitarismo. Uma experiência literária intensa e necessária.</p>
-                                <p class="card-text">Nota: <span>5</span></p>
-                            </div>
-                        </div>
-                    </li>
+                    </li>                    
                     </ul>
                 </div>
             </div>
             <script th:src="@{/js/script.js}"></script> 
-        </body>
+    </body>
 </html>

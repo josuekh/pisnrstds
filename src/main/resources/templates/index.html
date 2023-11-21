@@ -14,16 +14,20 @@
     <body>
         <div class="container">
             <div class="row justify-content-center" id="livros-list">               
-                <div class="livro p2 mb-2 col-sm-3">
-                    <div >
-                        <a href="detalhes">
-                            <img class="w-100" src="../images/1984_George_Orwell.jpg" alt="" title="" style="">
+                <div th:each="livro : ${livros}" class="livro p2 mb-2 col-sm-3">
+                    <div>
+                        <a th:href="@{'/detalhes/' + ${livro.id}}">
+                            <th:block th:with="livroNome=${livro.nome.replaceAll(' ', '_')}, livroAutor=${livro.autor.replaceAll(' ', '_')}, imagemNome=${livroNome + '_' + livroAutor}">
+                                <img class="w-100" th:src="@{'../images/' + ${imagemNome + '.jpg'}}" alt="" title=""
+                                     th:alt="${livro.nome}" th:title="${livro.nome}"
+                                     onerror="this.src='../images/img_placeholder.jpg';">
+                            </th:block>
                         </a>
                         <p>
-                            <span>1984</span>
+                            <span th:text="${livro.nome}"></span>
                         </p>
-                        <p class="mb-0">
-                            <span>George Orwell</span>
+                        <p>
+                            <span  th:text="${livro.autor}"></span>
                         </p>
                     </div>
                 </div>
